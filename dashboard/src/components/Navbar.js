@@ -28,7 +28,7 @@ const Navbar = ({show}) =>{
                 <Link to="/RemoveAdmin"><IoPersonRemove />Remove Admin</Link>
             </li>
             <li>
-                <Link to="/"><AiOutlineSchedule />Schedule Meeting</Link>
+                <Link to="/ScheduleMeet"><AiOutlineSchedule />Schedule Meeting</Link>
             </li>
             
             <li>
