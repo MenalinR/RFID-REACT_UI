@@ -7,8 +7,14 @@ import Home from './pages/Home';
 import AddAdmin from './pages/AddAdmin';
 import RemoveAdmin from './pages/RemoveAdmin';
 import AddEmployee from './pages/AddEmployee';
+import ScheduleMeet from './pages/ScheduleMeet';
 import logo from './components/slt.png';
 import './App.css';
+import './components/add.css';
+import './components/remove.css';
+import './components/ScheduleMeet.css';
+
+
 
 function App() {
   const [showNav, setshowNav] = useState(false);
@@ -27,6 +33,7 @@ function App() {
         <Route path="/AddAdmin" element={<AddAdmin />} />
         <Route path="/RemoveAdmin" element={<RemoveAdmin />} />
         <Route path="/AddEmployee" element={<AddEmployee />} />
+        <Route path="/ScheduleMeet" element={<ScheduleMeet />} />
       </Routes>
       </div>
     </Router>
