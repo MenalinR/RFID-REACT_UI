@@ -1,12 +1,13 @@
 
 import React from 'react';
+import '../components/add.css';
 
 
 
 const AddAdmin= () => {
   return (
     <section className="container">
-      <header>Add Admin</header>
+      <h4 className="add">Add Admin</h4><hr></hr>
       <form action="#" className="form">
         <div className="input-box">
           <label>Admin Name</label>
@@ -27,7 +28,7 @@ const AddAdmin= () => {
           </select>
         </div>
         <div className="button">
-          <button type="submit">Add Admin</button>
+          <button type="submit">Add </button>
         </div>
       </form>
     </section>
