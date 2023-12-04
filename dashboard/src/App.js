@@ -13,11 +13,15 @@ import './App.css';
 import './components/add.css';
 import './components/remove.css';
 import './components/ScheduleMeet.css';
+import './components/addemp.css';
+import './components/home.css';
+
 
 
 
 function App() {
   const [showNav, setshowNav] = useState(false);
+  
 
   return (
     <Router>
