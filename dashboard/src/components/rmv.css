@@ -1,0 +1,74 @@
+/* RemoveEmployee.css */
+
+.up{
+  padding-top: 30px;
+  margin-bottom: 20px;
+  width: 500px;
+  
+}
+.container {
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 50px auto;
+  padding-top: 30px;
+ font-size: larger;
+}
+#remove{
+  height: 50vh;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-top: 30px;
+  font-size: medium;
+}
+
+.input-box {
+  color: #333;
+  font-size: 5px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.input-box input {
+  height: 30px;
+  width: 100%;
+  outline: none;
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 10px;
+}
+
+#remove h4{
+color: #434ee6;;
+}
+.button {
+  text-align: center;
+  padding-top: 100px;
+ 
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  
+}
+
+button:hover {
+  background-color: #45a049;
+}

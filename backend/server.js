@@ -111,7 +111,7 @@ app.post('/AddEmployee', (req, res) => {
 
 // Schedule a new meeting
 app.post('/ScheduleMeet', (req, res) => {
-  const currentDate = new Date().toISOString().split('T')[0]; // Get current date in "YYYY-MM-DD" format
+  const currentDate = new Date().toISOString().split('T')[0]; // Getting current date in "YYYY-MM-DD" format
   const sql = "INSERT INTO meeting (`reference_key`, `topic`, `Participants`, `date`, `start_time`, `end_time`, `scheduler`, `duration`, `schldate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const { referenceKey, topic, Participants, date, start_time, end_time, scheduler, duration } = req.body;
   const values = [referenceKey, topic, Participants, date, start_time, end_time, scheduler, duration, currentDate];

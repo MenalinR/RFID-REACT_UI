@@ -1,0 +1,55 @@
+/* Main.css */
+
+.main {
+  flex: 1;
+     /* Adjust the margin as needed */
+    height: 108.3vh; /* Set the height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: black;
+    width: 160vh;
+    margin-left: 320px;
+    margin-top: 214px;
+  }
+  .searchbar {
+    margin-left: 1200px;
+    position: absolute;
+    top: 30px; /* Adjust the top position as needed */
+    left: 20px; /* Adjust the left position as needed */
+    transition: all 0.3s ease;
+  }
+  
+  .search-input {
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 1);
+    transition: all 0.3s ease;
+  }
+  .searchbar:hover {
+    transform: scale(1.1); /* Scale up on hover */
+  }
+  
+  .search-input:focus {
+    outline: none; /* Remove focus outline */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add box shadow on focus */
+  }
+  .search-icon {
+    margin-left: -39px; /* Adjust the margin to separate the icon from the input */
+    font-size: 20px;
+  }
+  /* .searchbar {
+  margin-top: -1000px;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.7);
+} */
+  

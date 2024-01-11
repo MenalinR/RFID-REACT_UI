@@ -1,0 +1,128 @@
+/* AddEmployee.css */
+
+.page {
+ 
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container {
+  margin-top: 100px;
+  margin-right: 10px;
+  height:88vh;
+  width: 400px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+
+
+.form-header {
+  color: #434ee6;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  
+  padding-top: 8px;
+  margin-bottom: 2px;
+  font-size: small;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+ 
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  padding-top: 1px;
+}
+
+.form-group.clearfix {
+  text-align: center;
+}
+
+.signup-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+ 
+}
+.reset-btn{
+  background-color: #4caf50;
+  color: white;
+  margin-left: 7px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  
+}
+.table {
+  overflow-y: auto; /* Enable vertical scrolling for tbody */
+  max-height: 400px;
+  background: white;
+  font-size: 25px;
+  width: 100%;
+  margin-top: 100px; /* Add margin to separate the form and table */
+}
+
+.table th {
+  padding: 10px;
+  text-align: left; /* Align table header text to the left */
+  background-color: #f2f2f2; /* Add background color for header row */
+  border: 1px solid #ddd;
+  font-size: 12px;
+}
+
+.table td {
+  
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.table h2 {
+  text-align: center; /* Center the table heading */
+  margin-bottom: 10px; /* Add margin below the table heading */
+  font-size: larger;
+}
+
+
+
+
+.btn-danger {
+  background-color: #f44336; /* Red */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 10px;
+}

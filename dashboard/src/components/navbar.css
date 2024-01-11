@@ -1,0 +1,65 @@
+/* Navbar.css */
+
+.sidenav {
+  width: 320px; /* Set the width */
+  height: 79vh; /* Set the height */
+  background:rgb(64,15,212);
+  position: absolute;
+  transition: all 0.5s;
+  padding-top: 7px;
+  margin-top: 220px;
+  
+  
+}
+#pp{
+  color: white;
+  padding-left: 50px;
+  font-weight: bold;
+  
+}
+
+.sidenav.active {
+  left: 0;
+}
+
+ul {
+  padding: 4px;
+  list-style: none;
+}
+
+ul li {
+  
+  padding-top: 30px;
+  width: 230px;
+  height: 45px;
+  align-items: center;
+  margin: 25px;
+  padding: 10px;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  background-color: rgb(42, 222, 102);
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  font-weight: bolder;
+  padding: 10px 15px;
+  border-radius: 6px;
+  padding-left: 10px;
+  padding-top: 3px;
+}
+
+ul li:hover {
+  background-color: rgb(64, 15, 212);
+  transform: translateZ(10px);
+  box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.8);
+}
+.dull-color {
+  color: #888; /* Set the dull color of your choice */
+}

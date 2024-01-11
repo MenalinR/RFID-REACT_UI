@@ -1,0 +1,50 @@
+/* Meetings.css */
+.meet{
+  font-size: 30px;
+  background: transparent;
+  height: 400px;
+  width: 800vh;
+  margin-left: 500px;
+  padding-right: 550px;
+  margin-top:0px ;
+  
+
+}
+.title{
+  padding-left: 200px;
+  color: #434ee6;
+  padding-top: 20px;
+}
+.meetings-container {
+  max-width: 800px;
+  margin: 0 auto;
+ background: white;
+  align-items: center;
+  font-size: medium;
+  
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  align-items: center;
+  
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  color: rgb(12, 27, 12);
+}
+
+th {
+  background-color: transparent;
+  color:black;
+  padding-right:30px ;
+  font-weight: bolder;
+}
+
+tbody tr:hover {
+  background-color: #ecf0f1;
+}

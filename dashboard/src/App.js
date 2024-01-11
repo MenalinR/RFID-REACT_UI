@@ -1,74 +1,65 @@
-// App.js
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
+// import { BrowserRouter as Router } from 'react-router-dom';
+// import Navbar from './pages/Navbar';
+// import Header from './pages/Header';
+// import Main from './pages/Main';
+import Login from './components/login/login'
+import Dash from './pages/dash';
+import Navbar from './pages/Navbar';
+import './components/login/login.css';
 
-import Home from './pages/Home';
-import AddAdmin from './pages/AddAdmin';
-
-import AddEmployee from './pages/AddEmployee';
-import ScheduleMeet from './pages/ScheduleMeet';
-import RemoveEmp from './pages/RemoveEmp';
-import Log from './pages/Log';
-
-
-import SLTMobitel from './components/sl.png';
-
-import './App.css';
-import './components/rmv.css';
-import './components/add.css';
-import './components/remove.css';
-import './components/ScheduleMeet.css';
-import './components/addemp.css';
-import './components/home.css';
-import './components/log.css';
+// import './components/header.css';
+// import './components/main.css';
+// import './components/navbar.css';
 
 
-function App() {
-  const [showNav, ] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+// import './App.css';
+
+const App = () => {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [userPermissions, setUserPermissions] = useState([]);
+  const [username, setUsername] = useState('');
+
+  const handleLoginSuccess = async (loggedInUsername) => {
+    console.log('Received username:', loggedInUsername);
+    
+    setUsername(loggedInUsername);
+   
+
+    try {
+      const response = await fetch(`http://localhost:8000/getUserPermissions/${loggedInUsername}`, {
+        method: 'GET',
+        credentials: 'include', //  credentials in the request
+      });
+
+      const data = await response.json();
+
+      console.log('Server response:', data);
+
+      if (data.success) {
+       
+        console.log('permissions:', data.permissions);
+        setUserPermissions(data.permissions);
+        setAuthenticated(true);
+      } else {
+        console.log('Failed to fetch user permissions:', data.error);
+      }
+    } catch (error) {
+      console.error('Error during fetching user permissions:', error);
+    }
+  };
 
   return (
-    <Router>
-      <header>
-       <div className='m'>
-        <div className="image">
-        <img src={SLTMobitel} alt='Logo' className='logo'/>
-        <p>SMART  MEETING  ROOM  RESERVATION</p>
-        </div>
-        </div>
-        
-        
-        
-      </header>
-    
-      <Navbar show={showNav} />
-      <div className="main" >
-        <div className="searchbar">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-        </div>
-        
-        <Routes>
-        <Route path="/" element={<Navigate to="/Home" />} />
-      <Route path="/Home" element={<Home />} />
-        <Route path="/AddAdmin" element={<AddAdmin />} />
-        
-        <Route path="/AddEmployee" element={<AddEmployee />} />
-        <Route path="/ScheduleMeet" element={<ScheduleMeet />} />
-        <Route path="/RemoveEmp" element={<RemoveEmp />} />
-        <Route path="/Log" element={<Log />} />
-
-        </Routes>
-      </div>
-    </Router>
-    
+    <div>
+      {authenticated ? (
+       //  passing username and userPermissions
+       <Dash username={username} userPermissions={userPermissions} />
+       ) : (
+         //  passing the handleLoginSuccess callback
+         <Login onLoginSuccess={handleLoginSuccess} />
+       )}
+    </div>
   );
-}
+};
 
 export default App;
