@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback,useRef } from 'react';
 import axios from 'axios';
 import { Multiselect } from 'multiselect-react-dropdown';
 import { toast, ToastContainer} from 'react-toastify';
@@ -26,6 +26,13 @@ const ScheduleMeet = () => {
   const [schldate] = useState('');
   const [ setShowModal] = useState(false);
   const [ setModalMessage] = useState('');
+  const mt =useRef('');
+  const mo =useRef('');
+  const par =useRef('');
+  const dt =useRef('');
+  const st =useRef('');
+  const et =useRef('');
+  const du =useRef('');
 
   useEffect(() => {
     axios.get('http://localhost:8000/ScheduleMeet')
@@ -98,6 +105,15 @@ const ScheduleMeet = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    mt.current.value="";
+    mo.current.value="";
+    par.current.value="";
+    dt.current.value="";
+    st.current.value="";
+    et.current.value="";
+    du.current.value="";
+
 
 
     if (!/^[a-zA-Z\s]+$/.test(scheduler)) {
@@ -203,12 +219,12 @@ const ScheduleMeet = () => {
        
         <div className="ib">
           <label>Meeting Topic</label>
-          <input type="text" id="topic" placeholder="Enter the topic of the meeting" name='topic'required
+          <input type="text" id="topic" ref={mt} placeholder="Enter the topic of the meeting" name='topic'required
           onChange={e => settopic(e.target.value)} />
         </div>
         <div className="ib">
           <label>Meeting Organizer</label>
-          <input type="text" placeholder="Scheduler name" name='scheduler'required
+          <input type="text" ref={mo} placeholder="Scheduler name" name='scheduler'required
            pattern="^[a-zA-Z\s]+$"
            title="organizer name should only contain letters and spaces."
           onChange={e => setscheduler(e.target.value)}  />
@@ -216,6 +232,7 @@ const ScheduleMeet = () => {
         <div className="ib">
   <label>Participants:</label><br />
   <Multiselect
+  ref={par}
     options={employeeNames}
     displayValue="name"
     onSelect={(selectedList) => handleMultiselectChange(selectedList)}
@@ -226,7 +243,7 @@ const ScheduleMeet = () => {
 </div>
         <div className="ib" id="date">
           <label>Date</label>
-          <input type="date" id="meetingDate"  name='date'required
+          <input type="date" id="meetingDate"  ref={dt} name='date'required
           onChange={e => setdate(e.target.value)}  />
         </div>
         <div className="ib">
@@ -234,15 +251,15 @@ const ScheduleMeet = () => {
           <div className="column">
             <div className="time">
               <label htmlFor="startTime">Start Time:</label>
-              <input type="time" id="startTime" name="start_time" required
+              <input type="time" id="startTime" ref={st} name="start_time" required
               onChange={e => setstart_time(e.target.value)} />
               <label htmlFor="endTime">End Time:</label>
-              <input type="time" id="endTime" name="end_time" required
+              <input type="time" id="endTime" ref={et} name="end_time" required
               onChange={e => setend_time(e.target.value)} />
             </div>
             <div className="ib">
               <div>
-                <label htmlFor="duration" id="du"  >
+                <label htmlFor="duration" id="du" ref={du} >
                   Duration (min): {duration}
                 </label>
               </div>
