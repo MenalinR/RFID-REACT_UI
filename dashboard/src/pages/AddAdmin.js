@@ -34,13 +34,6 @@ const AddAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!/^[a-zA-Z\s]+$/.test(name)) {
-      setModalMessage('Admin name should only contain letters and spaces.');
-      setShowModal(true);
-      return;
-    }
-
     try {
       // Make a POST request to add admin data
       const response = await axios.post('http://localhost:8000/AddAdmin/', {
@@ -55,7 +48,8 @@ const AddAdmin = () => {
     const successMessage = 'Admin added successfully: ' + response.data.result;
     setModalMessage(successMessage);
     setShowModal(true);
-   
+    // You can fetch the updated list of admins here if needed
+    // Example: axios.get('http://localhost:8000/GetAdmins').then(res => setAdmins(res.data));
   } else {
     const errorMessage = 'Error adding admin: ' + response.data.error;
     setModalMessage(errorMessage);
@@ -83,8 +77,6 @@ const AddAdmin = () => {
             placeholder="Enter admin name"
             name="name"
             required
-           pattern="^[a-zA-Z\s]+$"
-            title="Admin name should only contain letters and spaces."
             onChange={(e) => setname(e.target.value)}
           />
         </div>
@@ -103,10 +95,11 @@ const AddAdmin = () => {
       <label>Permissions:</label>
       <div className="checkbox-group">
         {[
-          { label: 'Add Employee', value: 'addEmployee' },
-          { label: 'Remove Employee', value: 'removeEmployee' },
-          { label: 'Schedule Meetings', value: 'scheduleMeetings' },
-          { label: 'Handle Log System', value: 'handleLogSystem' },
+          { label: 'Manage User', value: 'manage_user' },
+          { label: 'Schedule Meeting', value: 'schedule_meeting' },
+          { label: 'Meeting Details', value: 'meeting_details' },
+          { label: 'User Creation', value: 'user_creation' },
+          { label: 'Log System Access', value: 'log' },
         ].map((permission) => (
           <div key={permission.value}>
             <label>
