@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import '../components/add.css';
@@ -9,6 +9,9 @@ const AddAdmin = () => {
   const [password, setpass] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const an =useRef('');
+  const pa =useRef('');
+  const pe =useRef('');
 
   const handleCheckboxChange = (event) => {
     const permissionValue = event.target.value;
@@ -34,6 +37,11 @@ const AddAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    an.current.value="";
+    pa.current.value="";
+    pe.current.value="";
     try {
       // Make a POST request to add admin data
       const response = await axios.post('http://localhost:8000/AddAdmin/', {
@@ -73,6 +81,7 @@ const AddAdmin = () => {
         <div className="in">
           <label>Admin Name</label>
           <input
+          ref={an}
             type="text"
             placeholder="Enter admin name"
             name="name"
@@ -83,6 +92,7 @@ const AddAdmin = () => {
         <div className="in">
           <label>Password:</label>
           <input
+          ref={pa}
             type="password"
             placeholder="Enter password"
             name="password"
@@ -93,7 +103,7 @@ const AddAdmin = () => {
 
         <div className="in">
       <label>Permissions:</label>
-      <div className="checkbox-group">
+      <div className="checkbox-group" >
         {[
           { label: 'Manage User', value: 'manage_user' },
           { label: 'Schedule Meeting', value: 'schedule_meeting' },
@@ -105,6 +115,7 @@ const AddAdmin = () => {
             <label>
             {permission.label}
               <input
+              ref={pe}
                 type="checkbox"
                 value={permission.value}
                 onChange={handleCheckboxChange}
