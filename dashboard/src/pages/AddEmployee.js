@@ -1,5 +1,5 @@
 // AddEmployee.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import axios from 'axios';
 import '../components/addemp.css';
 import { toast, ToastContainer} from 'react-toastify';
@@ -16,6 +16,14 @@ const AddEmployee = () => {
   const [role, setJobRole] = useState('');
   const [ setShowModal] = useState(false);
   const [ setModalMessage] = useState('');
+  const eid =useRef('');
+  const ename =useRef('');
+  const no =useRef('');
+  const pno =useRef('');
+  const dep =useRef('');
+  const bui =useRef('');
+  const job =useRef('');
+ 
  
   useEffect(() => {
     axios.get('http://localhost:8000/AddEmployee')
@@ -52,21 +60,20 @@ const AddEmployee = () => {
       });
   };
 
-  const handleReset = () => {
-    // Reset all state variables to their initial values
-    setEmployeeID('');
-    setname('');
-    setRFIDNo('');
-    setPhoneNumber('');
-    setDepartment('');
-    setBuilding('');
-    setJobRole('');
-  };
+
 
   
   
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    eid.current.value="";
+    ename.current.value="";
+    no.current.value="";
+    pno.current.value="";
+    dep.current.value="";
+    bui.current.value="";
+    job.current.value="";
 
     if (!/^[a-zA-Z\s]+$/.test(name)) {
       setModalMessage('Employee name should only contain letters and spaces.');
@@ -136,52 +143,53 @@ const AddEmployee = () => {
         </div>
         <div className="form-group">
           <label>Employee ID</label>
-          <input type="text" placeholder="Enter ID" name="EID" required
+          <input type="text"  ref={eid} placeholder="Enter ID" name="EID" required
           onChange={e => setEmployeeID(e.target.value)} />
         </div>
         <div className="form-group">
           <label>Employee Name</label>
-          <input type="text" placeholder="Enter Employee Name" name="name" required 
+          <input type="text" ref={ename}  placeholder="Enter Employee Name" name="name" required 
            pattern="^[a-zA-Z\s]+$"
            title="Employee name should only contain letters and spaces." 
           onChange={e => setname(e.target.value)}/>
         </div>
         <div className="form-group">
           <label>RFID No</label>
-          <input type="text" placeholder="Enter ID" name="RFID_no" required
+          <input type="text" ref={no} placeholder="Enter ID" name="RFID_no" required
           onChange={e => setRFIDNo(e.target.value)} />
         </div>
         <div className="form-group">
           <label>Phone Number</label>
-          <input type="text" placeholder="Enter Phone Number" name="phone_no" required 
+          <input type="text" ref={pno} placeholder="Enter Phone Number" name="phone_no" required 
            pattern="^\d{10}$"
            title="Please enter a 10-digit phone number."
           onChange={e => setPhoneNumber(e.target.value)}/>
         </div>
         <div className="form-group">
           <label>Department</label>
-          <input type="text" placeholder="Enter Department" name="department" required 
+          <input type="text" ref={dep} placeholder="Enter Department" name="department" required 
           onChange={e =>  setDepartment(e.target.value)}/>
         </div>
         <div className="form-group">
           <label>Building</label>
-          <input type="text" placeholder="Enter Phone Number" name="building" required
+          <input type="text" ref={bui} placeholder="Enter Phone Number" name="building" required
           maxLength={1}
           onChange={e => setBuilding(e.target.value)} />
         </div>
         <div className="form-group">
           <label>Job Role</label>
-          <input type="text" placeholder="Enter Job Role" name="role" required 
+          <input type="text" ref={job} placeholder="Enter Job Role" name="role" required 
           onChange={e => setJobRole(e.target.value)}/>
         </div>
         <div className="form-group clearfix">
           <button type="submit" className="signup-btn">
             Add
           </button>
-          <space direction="horizontal" size={12}></space>
-          <button type="button" className="reset-btn" onClick={handleReset} >
-            Reset
-          </button>
+          {/* <space direction="horizontal" size={12}></space>
+          <button type="button" className="reset-btn" onClick={handleReset}>
+  Reset
+</button> */}
+
         </div>
       </form>
 
