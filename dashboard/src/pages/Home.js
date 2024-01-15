@@ -17,19 +17,27 @@ const Home = () => {
   useEffect(() => {
     // Fetch scheduled meetings from the server
     axios.get('http://localhost:8000/ScheduleMeet')
-      .then((res) => {
-        // Transform the data to the format expected by react-big-calendar
-        const transformedEvents = res.data.map((event) => ({
+    .then((res) => {
+      // Transform the data to the format expected by react-big-calendar
+      const transformedEvents = res.data.map((event) => {
+        const startDate = new Date(event.date).toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'numeric',
+          year: 'numeric',
+        });
+        
+        return {
           title: event.topic,
-          start: moment(`${event.date} ${event.start_time}`, 'YYYY-MM-DD HH:mm:ss').toDate(),
-          end: moment(`${event.date} ${event.end_time}`, 'YYYY-MM-DD HH:mm:ss').toDate(),
+          start: moment(`${startDate} ${event.start_time}`, 'DD/MM/YYYY HH:mm:ss').toDate(),
+          end: moment(`${startDate} ${event.end_time}`, 'DD/MM/YYYY HH:mm:ss').toDate(),
           tooltip: `Topic: ${event.topic}\nParticipants: ${event.Participants}\nOrganizer: ${event.scheduler}`,
-        }));
-
-        console.log('Transformed Events:', transformedEvents);
-
-        setEvents(transformedEvents);
-      })
+        };
+});
+    
+      console.log('Transformed Events:', transformedEvents);
+    
+      setEvents(transformedEvents);
+    })
       .catch((error) => console.error('Error fetching events:', error));
   }, []); // Fetch events when the component mounts
 
