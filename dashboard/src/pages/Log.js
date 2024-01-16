@@ -1,52 +1,54 @@
 // Meetings.js
 
-import React, {  useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../components/log.css'; // Import the CSS file for styling
 
 const Log = () => {
- 
+  const [meetingDetails, setMeetingDetails] = useState([]);
 
   useEffect(() => {
     // Fetch meetings data from your backend API
-    fetch('your-api-url/meetings')
+    fetch('http://localhost:8000/getAllMeetingDetails')
       .then((response) => response.json())
-     
+      .then((data) => setMeetingDetails(data))
       .catch((error) => console.error('Error fetching meetings:', error));
   }, []);
 
   return (
     <div className='meet'>
-    <div className="meetings-container">
+      <div className="meetings-container">
         <div className='title'>
-      <h2>Meeting Details</h2>
-      </div>
-      <table>
-        <thead>
-          <tr>
-          <th>Scheduled Date</th>
-            <th>Meeting Date</th>
-            <th>Participants</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Meeting Topic</th>
-            <th>Meeting Organizer</th>
-          </tr>
-        </thead>
-        <tbody>
-           
-            <tr >
-            <th>27/11/2023</th>
-              <td>1/12/2023</td>
-              <td>Emp1,Emp2</td>
-              <td>1.00pm</td>
-              <td>2.00pm</td>
-              <td>project progress</td>
-              <th>Menalin</th>
+          <h2>Meeting Details</h2>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Scheduled Date</th>
+              <th>Meeting Date</th>
+              <th>Participant</th>
+              <th>In Time</th>
+              <th>Meeting Topic</th>
+              <th>Start Time</th>
+              <th>End Time</th> 
+              <th>Meeting Organizer</th>
             </tr>
-          
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {Array.isArray(meetingDetails) && meetingDetails.map((meeting, index) => (
+              <tr key={index}>
+                <td>{meeting.scheduledDate}</td>
+                <td>{meeting.meetingDate}</td>
+                <td>{meeting.participant}</td>
+                <td>{meeting.inTime}</td>
+                <td>{meeting.meetingTopic}</td>
+                <td>{meeting.startTime}</td>
+                <td>{meeting.endTime}</td>
+                <td>{meeting.meetingOrganizer}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
