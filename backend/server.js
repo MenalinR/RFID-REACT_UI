@@ -130,7 +130,7 @@ app.post('/ScheduleMeet', (req, res) => {
 app.post('/checkOverlap', (req, res) => {
   const { date, start_time, end_time } = req.body;
 
-  const sql = "SELECT * FROM meeting WHERE date = ? AND ((start_time <= ? AND end_time >= ?) OR (start_time >= ? AND start_time < ?) OR (end_time > ? AND end_time <= ?))";
+  const sql = "SELECT * FROM meeting WHERE date = ? AND ((start_time <= ? AND end_time >= ?) OR (start_time >= ? AND start_time < ?) OR (end_time >= ? AND end_time <= ?))";
   const values = [date, start_time, end_time, start_time, end_time, start_time, end_time];
 
   db.query(sql, values, (err, data) => {
