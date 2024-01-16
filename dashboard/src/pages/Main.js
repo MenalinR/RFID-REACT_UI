@@ -1,6 +1,6 @@
 // Main.js
 import React, { useState } from 'react';
-import backgroundImage from '../components/background.jpg';
+import backImage from '../components/back.jpg';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/Home';
 import MeetingTable from '../pages/MeetingTable';
@@ -23,7 +23,7 @@ const Main = () => {
     <div
       className="main"
       style={{
-        backgroundImage: `url(${backgroundImage})`,
+        backgroundImage: `url(${backImage})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
