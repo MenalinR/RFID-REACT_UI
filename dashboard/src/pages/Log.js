@@ -5,6 +5,9 @@ import '../components/log.css'; // Import the CSS file for styling
 
 const Log = () => {
   const [meetingDetails, setMeetingDetails] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
+  const [data, ] = useState([]);
 
   useEffect(() => {
     // Fetch meetings data from your backend API
@@ -14,11 +17,28 @@ const Log = () => {
       .catch((error) => console.error('Error fetching meetings:', error));
   }, []);
 
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+    const filtered = data.filter(d =>
+      Object.values(d).some(value =>
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setFilteredData(filtered);
+  };
+
   return (
     <div className='meet'>
       <div className="meetings-container">
         <div className='title'>
           <h2>Meeting Details</h2>
+          <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
         </div>
         <table>
           <thead>
