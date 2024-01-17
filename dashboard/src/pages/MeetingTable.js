@@ -5,10 +5,15 @@ import '../components/meetingtable.css';
 
 const MeetingTable = () => {
   const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:8000/ScheduleMeet')
-      .then(res => setData(res.data))
+      .then(res => {
+        setData(res.data);
+        setFilteredData(res.data);
+      })
       .catch(err => console.error(err));
   }, []);
 
@@ -19,7 +24,10 @@ const MeetingTable = () => {
           console.log(response.data);
           // Fetch updated data after deleting a record
           axios.get('http://localhost:8000/ScheduleMeet')
-            .then(res => setData(res.data))
+            .then(res => {
+              setData(res.data);
+              setFilteredData(res.data);
+            })
             .catch(err => console.log(err));
         } else {
           console.error('Error deleting meeting:', response.data);
@@ -30,11 +38,33 @@ const MeetingTable = () => {
       });
   };
 
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+    const filtered = data.filter(d =>
+      Object.values(d).some(value =>
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setFilteredData(filtered);
+  };
+
   return (
     <div className="meeting-table-container">
+
       <h5>Meeting Table</h5>
+      <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+
+
+
       <div className="meeting-table-wrapper">
-      <table className="meeting-table">
+        
+        <table className="meeting-table">
         <thead>
           <tr>
             <th>Reference Key</th>
@@ -79,7 +109,7 @@ const MeetingTable = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
       </div>
     </div>
   );
