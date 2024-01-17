@@ -23,12 +23,15 @@ const AddEmployee = () => {
   const dep =useRef('');
   const bui =useRef('');
   const job =useRef('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
  
  
   useEffect(() => {
     axios.get('http://localhost:8000/AddEmployee')
     .then(res => setData(res.data))
     .catch(err => console.log(err));
+    
   }, []);
   
   const customToastStyle = {
@@ -134,6 +137,16 @@ const AddEmployee = () => {
   //   document.getElementById('resume-form').reset()
   // }
 
+  const handleSearch = (event) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+    const filtered = data.filter(d =>
+      Object.values(d).some(value =>
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+    setFilteredData(filtered);
+  };
 
   return (
     <div className="page">
@@ -196,6 +209,12 @@ const AddEmployee = () => {
 
       <div className="table">
       <h2>Employee Table</h2>
+      <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
       <table>
         <thead>
           <tr>
