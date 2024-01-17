@@ -90,7 +90,7 @@ const AddAdmin = () => {
           />
         </div>
         <div className="in">
-          <label>Password:</label>
+          <label>Password</label>
           <input
           ref={pa}
             type="password"

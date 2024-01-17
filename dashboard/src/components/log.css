@@ -10,10 +10,20 @@
   
 
 }
-.title{
+.title h2{
   padding-left: 200px;
   color: #434ee6;
   padding-top: 20px;
+}
+.title {
+  padding-left: 20px;
+}
+.title input{
+  width: 150px;
+  height: 30px;
+  padding-left: 5px;
+  font-size: 10px;
+  border-radius: 10px;
 }
 .meetings-container {
   max-width: 800px;
