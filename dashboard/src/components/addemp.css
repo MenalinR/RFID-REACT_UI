@@ -81,6 +81,7 @@
   font-size: 14px;
   
 }
+
 .table {
   overflow-y: auto; /* Enable vertical scrolling for tbody */
   max-height: 400px;
@@ -124,5 +125,15 @@
   display: inline-block;
   font-size: 14px;
   cursor: pointer;
+  border-radius: 10px;
+}
+.table{
+  padding-left: 50px;
+}
+.table input{
+  width: 150px;
+  height: 30px;
+  padding-left: 5px;
+  font-size: 10px;
   border-radius: 10px;
 }
