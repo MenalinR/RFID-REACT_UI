@@ -1,8 +1,7 @@
 /* meetingtable.css */
 
 .meeting-table-container {
-  overflow-y: auto; /* Enable vertical scrolling for tbody */
-  max-height: 400px;
+  
     width: 90%;
  color: black;
   background: #ddd;
@@ -10,6 +9,7 @@
   }
   .meeting-table-wrapper {
     overflow-y: auto;
+    max-height: 400px;
   }
 
 
@@ -19,8 +19,9 @@
   }
   
   .meeting-table {
-    
-    width: 100%;
+    overflow-y: auto; /* Enable vertical scrolling for tbody */
+ 
+    width: 97%;
     border-collapse: collapse;
     background-color: #f5f5f5;
     margin-top: 20px;
@@ -68,6 +69,16 @@
   /* Adjust other styles as needed */
   h5{
     padding-left: 450px;
+    padding-top: 20px;
    
   }
-  
+  .meeting-table-container{
+    padding-left: 50px;
+  }
+  .meeting-table-container input{
+    width: 150px;
+    height: 30px;
+    padding-left: 5px;
+    font-size: 10px;
+    border-radius: 10px;
+  }
