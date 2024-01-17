@@ -8,11 +8,11 @@ import AddAdmin from '../pages/AddAdmin';
 import AddEmployee from '../pages/AddEmployee';
 import ScheduleMeet from '../pages/ScheduleMeet';
 import Log from '../pages/Log';
-import { FaSearch } from 'react-icons/fa';
+
 // import { IoSearchCircle } from "react-icons/io5";
 
 const Main = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  
 
   return (
 
@@ -38,17 +38,7 @@ const Main = () => {
         marginTop: '-217px',
       }}
     >
-      <div className="searchbar">
      
-        <input 
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
-         <FaSearch className="search-icon" />
-      </div>
 
       <Routes>
         <Route path="/" element={<Navigate to="/Home" />} />
