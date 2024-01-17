@@ -29,7 +29,10 @@ const AddEmployee = () => {
  
   useEffect(() => {
     axios.get('http://localhost:8000/AddEmployee')
-    .then(res => setData(res.data))
+    .then(res =>{
+     setData(res.data);
+    setFilteredData(res.data);
+  })
     .catch(err => console.log(err));
     
   }, []);
@@ -141,9 +144,8 @@ const AddEmployee = () => {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
     const filtered = data.filter(d =>
-      Object.values(d).some(value =>
-        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      d.name.toLowerCase().includes(searchTerm.toLowerCase())
+      
     );
     setFilteredData(filtered);
   };
@@ -230,7 +232,7 @@ const AddEmployee = () => {
         </thead>
         
         <tbody >
-          {data.map((d) => (
+          {filteredData.map((d) => (
             <tr key={d.EID}>
               <td>{d.EID}</td>
               <td>{d.name}</td>
