@@ -5,6 +5,8 @@ import moment from 'moment';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BsCalendarCheckFill } from "react-icons/bs";
+import '../components/home.css';
 
 const localizer = momentLocalizer(moment);
 
@@ -31,7 +33,6 @@ const Home = () => {
             tooltip: `Topic: ${event.topic}\nParticipants: ${event.Participants}\nOrganizer: ${event.scheduler}`,
           };
         });
-
         // Find and set the upcoming meeting
         const sortedEvents = transformedEvents.sort((a, b) => a.start - b.start);
         const upcoming = sortedEvents.find((event) => event.start > new Date());
@@ -78,29 +79,46 @@ const Home = () => {
 
   return (
     <div>
-      {upcomingMeeting && (
-        <div style={{ marginBottom: '20px', marginLeft: '-230px', borderRadius:'10px', padding: '16px', border: '1px solid #ddd',fontSize: '15px', width:'300px' ,paddingBottom:'2px',background:'white'}}>
-          <h3 style={{fontSize:'20px'}} >Upcoming Meeting</h3>
-          <div style={{paddingTop:'1px'}}>
+    {upcomingMeeting && (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center', // Center items horizontally
+        justifyContent: 'center', // Center items vertically
+        marginBottom: '20px',
+        borderRadius: '10px',
+        padding: '16px',
+        border: '1px solid #ddd',
+        fontSize: '15px',
+        width: '300px',
+        paddingBottom: '2px',
+        background: 'white',
+        marginLeft: '-40px',
+        marginTop:'110px'
+      }}>
+        <BsCalendarCheckFill />
+        <h3 style={{ marginTop: '10px', fontSize: '20px' }}>Upcoming Meeting</h3>
+
+        <div style={{ paddingTop: '1px' }}>
           <p>Title: {upcomingMeeting.title}</p>
           <p>Start Time: {moment(upcomingMeeting.start).format('LLL')}</p>
           <p>End Time: {moment(upcomingMeeting.end).format('LLL')}</p>
-          <p>Topic: {upcomingMeeting.title}</p>
-          </div>
-
+          <p>Organizer: {upcomingMeeting.scheduler}</p>
         </div>
-      )}
-
+      </div>
+    )}
+    <div className='cal'>
       <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500, fontSize: 15, backgroundColor: '#f5f5f5', borderRadius: 10 }}
+        style={{ height: 470, fontSize: 15, backgroundColor: '#f5f5f5', borderRadius: 10 }}
         eventPropGetter={eventStyleGetter}
         onSelectEvent={handleEventClick}
         tooltipAccessor="tooltip" // Use the 'tooltip' property for the tooltip content
       />
+    </div>
       <ToastContainer
         toastStyle={customToastStyle}
       />
