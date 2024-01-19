@@ -1,85 +1,75 @@
 // AddEmployee.js
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import '../components/addemp.css';
-import { toast, ToastContainer} from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { MdOutlineRefresh } from "react-icons/md";
 
 const AddEmployee = () => {
   const [data, setData] = useState([]);
-  const [name, setname]= useState('')
+  const [name, setname] = useState('');
   const [EID, setEmployeeID] = useState('');
   const [RFID_no, setRFIDNo] = useState('');
   const [phone_no, setPhoneNumber] = useState('');
   const [department, setDepartment] = useState('');
   const [building, setBuilding] = useState('');
   const [role, setJobRole] = useState('');
-  const [ setShowModal] = useState(false);
-  const [ setModalMessage] = useState('');
-  const eid =useRef('');
-  const ename =useRef('');
-  const no =useRef('');
-  const pno =useRef('');
-  const dep =useRef('');
-  const bui =useRef('');
-  const job =useRef('');
+  const [setShowModal] = useState(false);
+  const [setModalMessage] = useState('');
+  const eid = useRef('');
+  const ename = useRef('');
+  const no = useRef('');
+  const pno = useRef('');
+  const dep = useRef('');
+  const bui = useRef('');
+  const job = useRef('');
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
- 
- 
+
   useEffect(() => {
     axios.get('http://localhost:8000/AddEmployee')
-    .then(res =>{
-     setData(res.data);
-    setFilteredData(res.data);
-  })
-    .catch(err => console.log(err));
-    
+      .then(res => {
+        setData(res.data);
+        setFilteredData(res.data);
+      })
+      .catch(err => console.log(err));
   }, []);
-  
+
   const customToastStyle = {
-    width: 'auto', // Adjust the width as needed
-    fontSize: '14px', // Adjust the font size as needed
+    width: 'auto',
+    fontSize: '14px',
   };
+
   const handleDelete = (EID) => {
-    // Send a DELETE request to the backend API
     axios.delete(`http://localhost:8000/DeleteEmployee/${EID}`)
       .then(response => {
-        // Handle success if needed
-        // Check for a successful response (status code in the 2xx range)
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
           toast.success('Record deleted successfully');
-  
-          // Fetch updated data after deleting a record
+
           axios.get('http://localhost:8000/AddEmployee')
             .then(res => setData(res.data))
             .catch(err => console.log(err));
         } else {
-          // Handle error for non-2xx status codes
           console.error('Error deleting employee:', response.data);
         }
       })
       .catch(error => {
-        // Handle error if needed
         console.error('Error deleting employee:', error);
       });
   };
 
-
-
-  
-  
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    eid.current.value="";
-    ename.current.value="";
-    no.current.value="";
-    pno.current.value="";
-    dep.current.value="";
-    bui.current.value="";
-    job.current.value="";
+    eid.current.value = "";
+    ename.current.value = "";
+    no.current.value = "";
+    pno.current.value = "";
+    dep.current.value = "";
+    bui.current.value = "";
+    job.current.value = "";
 
     if (!/^[a-zA-Z\s]+$/.test(name)) {
       setModalMessage('Employee name should only contain letters and spaces.');
@@ -95,59 +85,46 @@ const AddEmployee = () => {
 
     axios.post('http://localhost:8000/AddEmployee', {
       EID,
-      name, 
+      name,
       RFID_no,
       phone_no,
       department,
       building,
       role,
     })
-    .then(response => {
-      // Handle success if needed
-      // Check for a successful response (status code in the 2xx range)
-      if (response.status >= 200 && response.status < 300) {
-        console.log(response.data);
-        toast.success('Record saved successfully');
+      .then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          console.log(response.data);
+          toast.success('Record saved successfully');
 
-        // Fetch updated data after adding a new record
-        axios.get('http://localhost:8000/AddEmployee')
-        .then(res => setData(res.data))
-
-      .catch(err => console.log(err));
-      } else {
-        // Handle error for non-2xx status codes
-        console.error('Error adding employee:', response.data);
-      }
-    })
-    .catch(error => {
-      // Handle error if needed
-      console.error('Error adding employee:', error);
-    });
-     // console.error('Post request is done');
-    // Add your form submission logic here
+          axios.get('http://localhost:8000/AddEmployee')
+            .then(res => setData(res.data))
+            .catch(err => console.log(err));
+        } else {
+          console.error('Error adding employee:', response.data);
+        }
+      })
+      .catch(error => {
+        console.error('Error adding employee:', error);
+      });
   };
-  
-
-
-  // const resetForm = () => {
-  //   name('')
-  //     EID('')
-  //     RFID_no('')
-  //     phone_no('')
-  //     department('')
-  //     building('')
-  //     role('')
-  //   document.getElementById('resume-form').reset()
-  // }
 
   const handleSearch = (event) => {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
     const filtered = data.filter(d =>
       d.name.toLowerCase().includes(searchTerm.toLowerCase())
-      
     );
     setFilteredData(filtered);
+  };
+
+  const handleRefresh = () => {
+    axios.get('http://localhost:8000/AddEmployee')
+      .then(res => {
+        setData(res.data);
+        setFilteredData(res.data);
+      })
+      .catch(err => console.log(err));
   };
 
   return (
@@ -208,52 +185,53 @@ const AddEmployee = () => {
         </div>
       </form>
 
-
       <div className="table">
-      <h2>Employee Table</h2>
-      <input
+        <h2>Employee Table</h2>
+        <span className="refresh-icon" onClick={handleRefresh}>
+        <MdOutlineRefresh />
+        </span>
+        <input
           type="text"
           placeholder="Search..."
           value={searchTerm}
           onChange={handleSearch}
         />
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>RFID No</th>
-            <th>Phone Number</th>
-            <th>Department</th>
-            <th>Building</th>
-            <th>Job Role</th>
-            
-          </tr>
-        </thead>
-        
-        <tbody >
-          {filteredData.map((d) => (
-            <tr key={d.EID}>
-              <td>{d.EID}</td>
-              <td>{d.name}</td>
-              <td>{d.RFID_no}</td>
-              <td>{d.phone_no}</td>
-              <td>{d.department}</td>
-              <td>{d.building}</td>
-              <td>{d.role}</td>
-              <td>
-                
-                
-                <button className='btn-danger' onClick={() => handleDelete(d.EID)}>Delete</button>
-              </td>
+       
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>RFID No</th>
+              <th>Phone Number</th>
+              <th>Department</th>
+              <th>Building</th>
+              <th>Job Role</th>
             </tr>
-          ))}
-        </tbody>
+          </thead>
+
+          <tbody>
+            {filteredData.map((d) => (
+              <tr key={d.EID}>
+                <td>{d.EID}</td>
+                <td>{d.name}</td>
+                <td>{d.RFID_no}</td>
+                <td>{d.phone_no}</td>
+                <td>{d.department}</td>
+                <td>{d.building}</td>
+                <td>{d.role}</td>
+                <td>
+                  <button className='btn-danger' onClick={() => handleDelete(d.EID)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
-    </div>
-    <ToastContainer
+      </div>
+
+      <ToastContainer
         toastStyle={customToastStyle}
-    />
+      />
     </div>
   );
 };
