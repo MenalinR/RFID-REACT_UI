@@ -2,6 +2,7 @@ import React, { useState,useRef } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import '../components/add.css';
+import { FaUser } from "react-icons/fa6";
 
 const AddAdmin = () => {
   const [permissions, setPermissions] = useState([]);
@@ -74,6 +75,9 @@ const AddAdmin = () => {
 
   return (
     <section className="co">
+      <div className='user'>
+      <FaUser />
+      </div>
       <h4 className="add">ADD ADMIN</h4>
       <hr></hr>
 
