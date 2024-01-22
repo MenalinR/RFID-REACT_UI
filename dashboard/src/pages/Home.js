@@ -94,7 +94,7 @@ const Home = () => {
         paddingBottom: '2px',
         background: 'white',
         marginLeft: '40px',
-        marginTop:'1px',
+        marginTop:'50px',
         backgroundColor:'#f2ebeb',
         
       }}>
