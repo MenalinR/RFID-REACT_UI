@@ -87,14 +87,16 @@ const Home = () => {
         justifyContent: 'center', // Center items vertically
         marginBottom: '20px',
         borderRadius: '10px',
-        padding: '16px',
+        padding: '2px',
         border: '1px solid #ddd',
         fontSize: '15px',
-        width: '300px',
+        width: '700px',
         paddingBottom: '2px',
         background: 'white',
-        marginLeft: '-40px',
-        marginTop:'110px'
+        marginLeft: '40px',
+        marginTop:'1px',
+        backgroundColor:'#f2ebeb',
+        
       }}>
         <BsCalendarCheckFill />
         <h3 style={{ marginTop: '10px', fontSize: '20px' }}>Upcoming Meeting</h3>
@@ -103,7 +105,7 @@ const Home = () => {
           <p>Title: {upcomingMeeting.title}</p>
           <p>Start Time: {moment(upcomingMeeting.start).format('LLL')}</p>
           <p>End Time: {moment(upcomingMeeting.end).format('LLL')}</p>
-          <p>Organizer: {upcomingMeeting.scheduler}</p>
+          
         </div>
       </div>
     )}
@@ -113,7 +115,7 @@ const Home = () => {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 470, fontSize: 15, backgroundColor: '#f5f5f5', borderRadius: 10 }}
+        style={{ height: 460, width:800, fontSize: 15, backgroundColor: '#f5f5f5', borderRadius: 10 }}
         eventPropGetter={eventStyleGetter}
         onSelectEvent={handleEventClick}
         tooltipAccessor="tooltip" // Use the 'tooltip' property for the tooltip content
