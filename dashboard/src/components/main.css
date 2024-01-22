@@ -3,7 +3,7 @@
 .main {
   flex: 1;
      /* Adjust the margin as needed */
-    height: 108.3vh; /* Set the height */
+    height: 100vh; /* Set the height */
     display: flex;
     justify-content: center;
     align-items: center;
