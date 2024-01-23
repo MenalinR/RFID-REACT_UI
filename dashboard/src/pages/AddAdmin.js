@@ -40,9 +40,7 @@ const AddAdmin = () => {
     e.preventDefault();
 
 
-    an.current.value="";
-    pa.current.value="";
-    pe.current.value="";
+   
     try {
       // Make a POST request to add admin data
       const response = await axios.post('http://localhost:8000/AddAdmin/', {
@@ -57,6 +55,10 @@ const AddAdmin = () => {
     const successMessage = 'Admin added successfully: ' + response.data.result;
     setModalMessage(successMessage);
     setShowModal(true);
+
+    setname('');
+    setpass('');
+    setPermissions([]);
     // You can fetch the updated list of admins here if needed
     // Example: axios.get('http://localhost:8000/GetAdmins').then(res => setAdmins(res.data));
   } else {
@@ -89,6 +91,7 @@ const AddAdmin = () => {
             type="text"
             placeholder="Enter admin name"
             name="name"
+            value={name} 
             required
             onChange={(e) => setname(e.target.value)}
           />
@@ -100,6 +103,7 @@ const AddAdmin = () => {
             type="password"
             placeholder="Enter password"
             name="password"
+            value={password}
             required
             onChange={(e) => setpass(e.target.value)}
           />
