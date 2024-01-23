@@ -79,48 +79,54 @@ const Home = () => {
 
   return (
     <div>
-    {upcomingMeeting && (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center', // Center items horizontally
-        justifyContent: 'center', // Center items vertically
-        marginBottom: '20px',
-        borderRadius: '10px',
-        padding: '2px',
-        border: '1px solid #ddd',
-        fontSize: '15px',
-        width: '700px',
-        paddingBottom: '2px',
-        background: 'white',
-        marginLeft: '40px',
-        marginTop:'50px',
-        backgroundColor:'#f2ebeb',
-        
-      }}>
-        <BsCalendarCheckFill />
-        <h3 style={{ marginTop: '10px', fontSize: '20px' }}>Upcoming Meeting</h3>
+  {upcomingMeeting && (
+  <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center', // Center items horizontally
+    justifyContent: 'center', // Center items vertically
+    marginBottom:'7px',
+    borderRadius: '10px',
+    padding: '20px', // Increased padding for better spacing
+    border: '0px solid #ddd', // Thicker border
+    fontSize: '18px', // Larger font size
+    width: '700px',
+    marginTop:'10px',
+    boxShadow: '0 0 55px rgba(0, 0, 0, 0.6)', // Add a subtle shadow
+    margin: '50px auto', // Center the element horizontally
+  }}>
+    <BsCalendarCheckFill style={{ fontSize: '36px', marginBottom: '10px', color: 'green' }} />
+    <h3 style={{ fontSize: '24px', marginBottom: '10px' }}>Upcoming Meeting</h3>
 
-        <div style={{ paddingTop: '1px' }}>
-          <p>Title: {upcomingMeeting.title}</p>
-          <p>Start Time: {moment(upcomingMeeting.start).format('LLL')}</p>
-          <p>End Time: {moment(upcomingMeeting.end).format('LLL')}</p>
-          
-        </div>
-      </div>
-    )}
-    <div className='cal'>
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 460, width:800, fontSize: 15, backgroundColor: '#f5f5f5', borderRadius: 10 }}
-        eventPropGetter={eventStyleGetter}
-        onSelectEvent={handleEventClick}
-        tooltipAccessor="tooltip" // Use the 'tooltip' property for the tooltip content
-      />
+    <div>
+      <p style={{ marginBottom: '5px' }}>Title: {upcomingMeeting.title}</p>
+      <p style={{ marginBottom: '5px' }}>Start Time: {moment(upcomingMeeting.start).format('LLL')}</p>
+      <p style={{ marginBottom: '5px' }}>End Time: {moment(upcomingMeeting.end).format('LLL')}</p>
     </div>
+  </div>
+)}
+
+<div className='cal'>
+  <Calendar
+    localizer={localizer}
+    events={events}
+    startAccessor="start"
+    endAccessor="end"
+    style={{
+      height: 460,
+      width: 800,
+      fontSize: 15,
+      backgroundColor: 'white', // Change background color
+      borderRadius: 10,
+      boxShadow: '0 0 10px rgba(0, 0, 0, 0.9)', // Add a subtle shadow
+      margin: '20px auto', // Center the element horizontally with a margin
+    }}
+    eventPropGetter={eventStyleGetter}
+    onSelectEvent={handleEventClick}
+    tooltipAccessor="tooltip"
+  />
+</div>
+
       <ToastContainer
         toastStyle={customToastStyle}
       />
