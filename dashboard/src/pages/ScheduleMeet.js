@@ -108,11 +108,11 @@ const ScheduleMeet = () => {
 
     mt.current.value="";
     mo.current.value="";
-    par.current.value="";
+    par.current.resetSelectedValues();  
     dt.current.value="";
     st.current.value="";
     et.current.value="";
-    du.current.value="";
+   
 
 
 
@@ -239,7 +239,7 @@ const ScheduleMeet = () => {
     onRemove={(selectedList) => handleMultiselectChange(selectedList)}
     selectedValues={selectedOptions}
   />
-  <p>Selected Participants: {selectedOptions.map(option => option.name).join(', ')}</p>
+ 
 </div>
         <div className="ib" id="date">
           <label>Date</label>
