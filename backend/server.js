@@ -59,7 +59,7 @@ app.get('/AddEmployee', (req, res) => {
 
 // Fetch employee names
 app.get('/getEmployeeNames', (req, res) => {
-  const sql = "SELECT name FROM employee";
+  const sql = "SELECT name, RFID_no FROM employee";
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching employee names:', err);
@@ -111,15 +111,18 @@ app.post('/AddEmployee', (req, res) => {
 
 // Schedule a new meeting
 app.post('/ScheduleMeet', (req, res) => {
+  console.log('Received request:', req.body);
   const currentDate = new Date().toISOString().split('T')[0]; // Getting current date in "YYYY-MM-DD" format
-  const sql = "INSERT INTO meeting (`reference_key`, `topic`, `Participants`, `date`, `start_time`, `end_time`, `scheduler`, `duration`, `schldate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  const { referenceKey, topic, Participants, date, start_time, end_time, scheduler, duration } = req.body;
-  const values = [referenceKey, topic, Participants, date, start_time, end_time, scheduler, duration, currentDate];
-
+  const sql = "INSERT INTO meeting (`reference_key`, `topic`, `Participants`, `date`, `start_time`, `end_time`, `scheduler`, `duration`, `schldate`, `RFID_nos`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const { referenceKey, topic, Participants, date, start_time, end_time, scheduler, duration, RFID_nos } = req.body;
+  const values = [referenceKey, topic, Participants, date, start_time, end_time, scheduler, duration, currentDate, JSON.stringify(RFID_nos)];
   db.query(sql, values, (err, data) => {
     if (err) {
       console.error('Error adding meeting:', err);
+      console.log('SQL Query:', sql);
+      console.log('Values:', values);
       return res.status(500).json({ error: 'Internal Server Error', details: err.message });
+      
     } else {
       return res.status(200).json({ success: true, data });
     }
@@ -251,6 +254,106 @@ app.post('/login', (req, res) => {
 });
 
 
+
+
+
+
+// app.post('/rfid-scan', (req, res) => {
+//   const { rfidData } = req.body;
+//   const sql = "INSERT INTO rfid_scans (rfid_data) VALUES (?)";
+//   db.query(sql, [rfidData], (err, data) => {
+//     if (err) {
+//       console.error('Error storing RFID data:', err);
+//       return res.status(500).json({ error: 'Internal Server Error' });
+//     }
+//     return res.status(200).json({ success: true, data });
+//   });
+// });
+
+
+
+
+
+app.post('/checkRFIDAccess', (req, res) => {
+  const { rfidData } = req.body;
+
+  // Log current time and date for debugging
+  const currentTime = new Date().toLocaleTimeString();
+  const currentDate = new Date().toLocaleDateString();
+  console.log('Current Time:', currentTime);
+  console.log('Current Date:', currentDate);
+
+  // Assuming the RFID data is stored as an array of strings in the RFID_nos field in the meeting table
+  const sql = "SELECT * FROM meeting WHERE date = CURDATE() AND start_time <= CURTIME() AND end_time >= CURTIME()";
+
+  db.query(sql, (err, data) => {
+    if (err) {
+      console.error('Error checking RFID access:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    if (data.length > 0) {
+      const currentMeeting = data[0];
+      const currentMeetingRFID = currentMeeting.RFID_nos;
+
+      if (currentMeetingRFID.includes(rfidData)) {
+        // RFID access is valid for the current meeting
+        logGrantedAccess(rfidData, currentTime);
+        return res.status(200).json({
+          success: true,
+          message: 'RFID access granted for the current meeting',
+          status: 'Meeting now',
+          currentTime: currentTime,
+          currentDate: currentDate,
+          currentMeetingRFID: currentMeetingRFID
+        });
+      } else {
+        // RFID access is denied as the provided RFID doesn't match the current meeting RFID
+        return res.status(403).json({
+          success: false,
+          message: 'RFID access denied for the current meeting',
+          status: 'Meeting now',
+          currentTime: currentTime,
+          currentDate: currentDate
+        });
+      }
+    } else {
+      // No meeting at the current time
+      return res.status(404).json({
+        success: false,
+        message: 'No meeting now',
+        currentTime: currentTime,
+        currentDate: currentDate
+      });
+    }
+  });
+});
+
+function logGrantedAccess(rfid, currentTime) {
+  const logSql = "INSERT INTO log (`rfid_no`, `inTIME`) VALUES (?, ?)";
+  db.query(logSql, [rfid, currentTime], (err) => {
+    if (err) {
+      console.error('Error logging granted access:', err);
+    } else {
+      console.log('Access granted logged successfully.');
+    }
+  });
+}
+
+
+// ... (existing code)
+
+
+// //  route to handle forgot password
+// app.post('/forgot', (req, res) => {
+//   const { email } = req.body;
+
+//   // Perform necessary actions for sending a password reset email
+//   // For example, generate a reset token, send an email, etc.
+
+//   // Return success or failure response
+//   res.json({ success: true, message: 'Password reset email sent successfully.' });
+// });
 
 
 
