@@ -11,7 +11,7 @@
 
 }
 .title h2{
-  padding-left: 200px;
+  padding-left: 300px;
   color: #434ee6;
   padding-top: 20px;
 }
@@ -26,11 +26,12 @@
   border-radius: 10px;
 }
 .meetings-container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
  background: white;
   align-items: center;
   font-size: medium;
+  border-radius: 10px;
   
 }
 
@@ -55,6 +56,15 @@ th {
   font-weight: bolder;
 }
 
+
 tbody tr:hover {
   background-color: #ecf0f1;
+}
+
+.refresh-icon{
+  padding-top: 0px;
+}
+.refresh-icon:hover{
+  cursor: pointer;
+  color: #4caf50;
 }
