@@ -92,7 +92,8 @@ const Home = () => {
     fontSize: '18px', // Larger font size
     width: '700px',
     marginTop:'10px',
-    boxShadow: '0 0 55px rgba(0, 0, 0, 0.6)', // Add a subtle shadow
+    background:'white',
+    boxShadow: '0 0 55px rgba(0, 0, 0, 1)', // Add a subtle shadow
     margin: '50px auto', // Center the element horizontally
   }}>
     <BsCalendarCheckFill style={{ fontSize: '36px', marginBottom: '10px', color: 'green' }} />
@@ -113,7 +114,7 @@ const Home = () => {
     startAccessor="start"
     endAccessor="end"
     style={{
-      height: 460,
+      height: 450,
       width: 800,
       fontSize: 15,
       backgroundColor: 'white', // Change background color
