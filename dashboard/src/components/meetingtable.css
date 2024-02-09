@@ -1,17 +1,18 @@
 /* meetingtable.css */
 
 .meeting-table-container {
-  
+  border-radius: 8px;
     width: 90%;
  color: black;
   background: #ddd;
    
   }
-  .meeting-table-wrapper {
-    overflow-y: auto;
-    max-height: 400px;
-  }
 
+   .meeting-table tbody {
+    display: block;
+    overflow-y: auto;
+    max-height: 380px;
+  } 
 
   .meeting-table-container h5{
     font-weight: bold;
@@ -20,17 +21,18 @@
   
   .meeting-table {
     overflow-y: auto; /* Enable vertical scrolling for tbody */
- 
-    width: 97%;
+    display: block;
+    width:100%;
     border-collapse: collapse;
     background-color: #f5f5f5;
     margin-top: 20px;
+    
   }
   
   .meeting-table th,
   .meeting-table td {
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 20px;
     text-align: left;
     font-size: 14px;
   }
@@ -50,7 +52,7 @@
   
   /* Add background color and adjust form styles */
   .form-container {
-    width: 400px;
+    width: 500px;
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
