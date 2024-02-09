@@ -11,8 +11,8 @@
 .form-container {
   margin-top: 50px;
   margin-right: 10px;
-  height:84vh;
-  width: 400px;
+  height:88vh;
+  width: 350px;
   background: white;
   border: 1px solid #ccc;
   padding: 20px;
@@ -27,7 +27,7 @@
   font-weight: bold;
   font-size: 25px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 2px;
 }
 
 .form-group {
@@ -81,21 +81,35 @@
   font-size: 14px;
   
 }
-
-.table {
+.emp tbody{
+  display: block;
+  overflow-y: auto;
+  max-height: 380px;
+  width: 600px;
+}
+.emp{
   overflow-y: auto; /* Enable vertical scrolling for tbody */
-  max-height: 630px;
+  display: block;
+  width: 85%;
+  border-collapse: collapse;
+  background-color: #f5f5f5;
+  margin-top: 20px;
+  padding: 30px;
+}
+.table {
+ 
   background: white;
   font-size: 25px;
   width: 100%;
   margin-top: 40px; /* Add margin to separate the form and table */
   border-radius: 10px;
+
 }
 
 .table th {
   padding: 10px;
   text-align: left; /* Align table header text to the left */
-  background-color: #f2f2f2; /* Add background color for header row */
+  background-color:  rgb(255, 255, 255,0.2); /* Add background color for header row */
   border: 1px solid #ddd;
   font-size: 12px;
 }
@@ -114,7 +128,10 @@
   font-size: larger;
 }
 
-
+.emp th {
+  background-color: #e0e0e0;
+  padding-left: 7px;
+}
 
 
 .btn-danger {
@@ -141,6 +158,7 @@
 }
 .refresh-icon{
   padding-top: 0px;
+ 
 }
 .refresh-icon:hover{
   cursor: pointer;
