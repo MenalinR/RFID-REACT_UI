@@ -197,7 +197,7 @@ const AddEmployee = () => {
           onChange={handleSearch}
         />
        
-        <table>
+        <table className="emp">
           <thead>
             <tr>
               <th>ID</th>
