@@ -1,19 +1,10 @@
 import React, { useState } from 'react';
-// import { BrowserRouter as Router } from 'react-router-dom';
-// import Navbar from './pages/Navbar';
-// import Header from './pages/Header';
-// import Main from './pages/Main';
+// import { BrowserRouter as  Router, Route, Routes } from 'react-router-dom';
+// import ForgotPassword from './pages/forgot';
 import Login from './components/login/login'
 import Dash from './pages/dash';
-import Navbar from './pages/Navbar';
 import './components/login/login.css';
 
-// import './components/header.css';
-// import './components/main.css';
-// import './components/navbar.css';
-
-
-// import './App.css';
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
