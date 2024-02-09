@@ -63,3 +63,12 @@ ul li:hover {
 .dull-color {
   color: #888; /* Set the dull color of your choice */
 }
+ul li.selected {
+  background-color: rgb(64, 15, 212);
+}
+
+ul li:hover {
+  background-color: rgb(64, 15, 212);
+  transform: translateZ(10px);
+  box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.8);
+}
