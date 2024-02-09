@@ -295,17 +295,19 @@ app.post('/checkRFIDAccess', (req, res) => {
     if (data.length > 0) {
       const currentMeeting = data[0];
       const currentMeetingRFID = currentMeeting.RFID_nos;
+      const currentMeetingReferenceKey= currentMeeting.reference_key;
 
       if (currentMeetingRFID.includes(rfidData)) {
         // RFID access is valid for the current meeting
-        logGrantedAccess(rfidData, currentTime);
+        logGrantedAccess(rfidData, currentTime,currentMeetingReferenceKey);
         return res.status(200).json({
           success: true,
           message: 'RFID access granted for the current meeting',
           status: 'Meeting now',
           currentTime: currentTime,
           currentDate: currentDate,
-          currentMeetingRFID: currentMeetingRFID
+          currentMeetingRFID: currentMeetingRFID,
+          currentMeetingReferenceKey: currentMeetingReferenceKey
         });
       } else {
         // RFID access is denied as the provided RFID doesn't match the current meeting RFID
@@ -329,9 +331,9 @@ app.post('/checkRFIDAccess', (req, res) => {
   });
 });
 
-function logGrantedAccess(rfid, currentTime) {
-  const logSql = "INSERT INTO log (`rfid_no`, `inTIME`) VALUES (?, ?)";
-  db.query(logSql, [rfid, currentTime], (err) => {
+function logGrantedAccess(rfid, currentTime,currentMeetingReferenceKey) {
+  const logSql = "INSERT INTO log (`rfid_no`, `inTIME`,`ref_key`) VALUES (?, ?,?)";
+  db.query(logSql, [rfid, currentTime,currentMeetingReferenceKey], (err) => {
     if (err) {
       console.error('Error logging granted access:', err);
     } else {
@@ -355,6 +357,35 @@ function logGrantedAccess(rfid, currentTime) {
 //   res.json({ success: true, message: 'Password reset email sent successfully.' });
 // });
 
+
+
+// Update the getAllMeetingDetails route to include inTime from the log table
+// Fetch all meeting details
+app.get('/getAllMeetingDetails', (req, res) => {
+  const sql = `
+  SELECT
+  employee.name,
+  log.rfid_no,
+  log.inTIME,
+  meeting.schldate,
+  meeting.topic,
+  meeting.start_time,
+  meeting.end_time,
+  meeting.date,
+  meeting.scheduler
+FROM log
+INNER JOIN employee ON log.rfid_no = employee.RFID_no
+INNER JOIN meeting ON log.ref_key = meeting.reference_key;`;
+
+  db.query(sql, (err, data) => {
+    if (err) {
+      console.error('Error executing SQL query:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    console.log('Meeting details:', data); // Log the data to check if it's empty
+    return res.status(200).json(data);
+  });  
+});
 
 
 
