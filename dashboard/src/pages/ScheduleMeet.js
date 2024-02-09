@@ -42,10 +42,14 @@ const ScheduleMeet = () => {
     axios.get('http://localhost:8000/getEmployeeNames')
       .then(res => {
         console.log(res.data);  // Log the data
-        setEmployeeNames(res.data);
+        setEmployeeNames(res.data.map(employee => ({
+          ...employee,
+          label: `${employee.name} - ${employee.RFID_no}`,
+        })));
       })
       .catch(error => console.error('Error fetching employee names:', error));
   }, []);
+  
   const handleMultiselectChange = (selectedList) => {
     setSelectedOptions(selectedList);
   };
@@ -75,31 +79,6 @@ const ScheduleMeet = () => {
     width: 'auto', // Adjust the width as needed
     fontSize: '14px', // Adjust the font size as needed
   };
-
-  // const handleDelete = (mid) => {
-  //   // Send a DELETE request to the backend API
-  //   axios.delete(http://localhost:8000/DeleteMeet/${mid})
-  //     .then(response => {
-  //       // Handle success if needed
-  //       // Check for a successful response (status code in the 2xx range)
-  //       if (response.status >= 200 && response.status < 300) {
-  //         console.log(response.data);
-  //         toast.success('Record deleted successfully');
-  
-  //         // Fetch updated data after deleting a record
-  //         axios.get('http://localhost:8000/ScheduleMeet')
-  //           .then(res => setData(res.data))
-  //           .catch(err => console.log(err));
-  //       } else {
-  //         // Handle error for non-2xx status codes
-  //         console.error('Error deleting meeting:', response.data);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       // Handle error if needed
-  //       console.error('Error deleting meeting:', error);
-  //     });
-  // };
   
 
 
@@ -131,6 +110,7 @@ const ScheduleMeet = () => {
 
 
     const participantsString = selectedOptions.map(employee => employee.name).join(', ');
+    const RFIDString = selectedOptions.map(employee => employee.RFID_no).join(', ');
     const calculatedDuration = calculateDuration();
     const referenceKey = uuidv4();
 
@@ -143,13 +123,13 @@ const ScheduleMeet = () => {
       end_time,
       scheduler,
       duration: calculatedDuration,
-      schldate
+      schldate,
+      RFID_nos: RFIDString.split(',')
     })
     .then(response => {
       // Handle success if needed
       // Check for a successful response (status code in the 2xx range)
       if (response.status >= 200 && response.status < 300) {
-        console.log(response.data);
         // Show toast with copyable referenceKey
         toast.success(
           <div>
@@ -234,7 +214,7 @@ const ScheduleMeet = () => {
   <Multiselect
   ref={par}
     options={employeeNames}
-    displayValue="name"
+    displayValue="label"
     onSelect={(selectedList) => handleMultiselectChange(selectedList)}
     onRemove={(selectedList) => handleMultiselectChange(selectedList)}
     selectedValues={selectedOptions}
@@ -273,47 +253,6 @@ const ScheduleMeet = () => {
         </div>
         </div>
       </form>
-{/* 
-      Meeting Table
-      <div className="ta">
-     
-        <table>
-          <thead>
-          {/* <h5>Meeting Table</h5> 
-            <tr>
-            <th>MID</th>
-              <th>Topic</th>
-              <th>Participants</th>
-              <th>Date</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Scheduler</th>
-              <th>Duration</th>
-              <th>Scheduling Date </th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((d) => (
-              <tr >
-                
-                <td>{d.topic}</td>
-                <td>{d.Participants}</td>
-                <td>{d.date}</td>
-                <td>{d.start_time}</td>
-                <td>{d.end_time}</td>
-                <td>{d.scheduler}</td>
-                <td>{d.duration}</td>
-                <td>{d.schldate}</td>
-                <td>
-                
-                  <button className='btn-danger' >Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}
       <ToastContainer
         toastStyle={customToastStyle}
       />
