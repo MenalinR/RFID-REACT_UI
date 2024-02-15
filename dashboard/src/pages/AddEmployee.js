@@ -26,20 +26,51 @@ const AddEmployee = () => {
   const job = useRef('');
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  const [scanRFIDButton, setScanRFIDButton] = useState(false);
+  
 
   useEffect(() => {
+    // Fetch the initial scan button status from the backend
+    axios.get('http://localhost:8000/getButtonStatus')
+      .then(response => {
+        const initialScanButtonStatus = response.data.scanButtonStatus;
+        setScanRFIDButton(initialScanButtonStatus);
+      })
+      .catch(error => {
+        console.error('Error fetching initial scan button status:', error);
+      });
+  
+    // Fetch your employee data or other initial data here
     axios.get('http://localhost:8000/AddEmployee')
       .then(res => {
         setData(res.data);
         setFilteredData(res.data);
       })
       .catch(err => console.log(err));
-  }, []);
+  }, []); // Empty dependency array to ensure the effect runs only once during component mount
+  
 
   const customToastStyle = {
     width: 'auto',
     fontSize: '14px',
   };
+
+  const handleScanRFID = () => {
+    // Make an HTTP request to update the button press status
+    axios.post('http://localhost:8000/updateButtonStatus', {
+      scanButtonStatus: !scanRFIDButton,
+    })
+      .then(response => {
+        console.log('Button status updated:', response.data);
+  
+      })
+      .catch(error => {
+        console.error('Error updating button status:', error);
+      });
+  };
+  
+  
+  
 
   const handleDelete = (EID) => {
     axios.delete(`http://localhost:8000/DeleteEmployee/${EID}`)
@@ -164,7 +195,7 @@ const AddEmployee = () => {
         </div>
         <div className="form-group">
           <label>Building</label>
-          <input type="text" ref={bui} placeholder="Enter Phone Number" name="building" required
+          <input type="text" ref={bui} placeholder="Enter block no" name="building" required
           maxLength={1}
           onChange={e => setBuilding(e.target.value)} />
         </div>
@@ -173,9 +204,23 @@ const AddEmployee = () => {
           <input type="text" ref={job} placeholder="Enter Job Role" name="role" required 
           onChange={e => setJobRole(e.target.value)}/>
         </div>
+        <button
+  type="button"
+  className="scan-btn"
+  onClick={() => {
+    setScanRFIDButton(!scanRFIDButton);
+    handleScanRFID();
+  }}
+>{scanRFIDButton ? 'scan button is on' : 'scan button is off'}
+</button>
+
         <div className="form-group clearfix">
           <button type="submit" className="signup-btn">
             Add
+          </button>
+
+          <button type="button" className="reset-btn" >
+            Reset
           </button>
           {/* <space direction="horizontal" size={12}></space>
           <button type="button" className="reset-btn" onClick={handleReset}>
