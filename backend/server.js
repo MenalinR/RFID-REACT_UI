@@ -269,67 +269,86 @@ app.post('/login', (req, res) => {
 //     return res.status(200).json({ success: true, data });
 //   });
 // });
+// let isScanning = false;
+
+// router.post('/startScan', (req, res) => {
+//   const { startScan } = req.body;
+
+//   if (startScan) {
+//     // Start the scan
+//     isScanning = true;
+//     console.log('Scan started');
+//   } else {
+//     // Stop the scan
+//     isScanning = false;
+//     console.log('Scan stopped');
+//   }
+
+//   res.status(200).json({ message: `Scan ${startScan ? 'started' : 'stopped'} successfully` });
+// });
 
 
 
 
+// app.post('/checkRFIDAccess', (req, res) => {
+//   const { rfidData, scanRFIDStatus } = req.body;
 
-app.post('/checkRFIDAccess', (req, res) => {
-  const { rfidData } = req.body;
+//   // Log current time and date for debugging
+//   const currentTime = new Date().toLocaleTimeString();
+//   const currentDate = new Date().toLocaleDateString();
+//   console.log('Current Time:', currentTime);
+//   console.log('Current Date:', currentDate);
 
-  // Log current time and date for debugging
-  const currentTime = new Date().toLocaleTimeString();
-  const currentDate = new Date().toLocaleDateString();
-  console.log('Current Time:', currentTime);
-  console.log('Current Date:', currentDate);
+//   if (scanRFIDStatus) {
+//     // Scan RFID button is on, add RFID to the RFID No column
+//     // Update the employee table with the scanned RFID
+//     const updateRFIDSql = "UPDATE employee SET RFID_no = ? WHERE EID = 1"; // Assuming EID 1 for example
+//     db.query(updateRFIDSql, [rfidData], (updateErr) => {
+//       if (updateErr) {
+//         console.error('Error updating RFID:', updateErr);
+//         return res.status(500).json({ error: 'Internal Server Error' });
+//       }
 
-  // Assuming the RFID data is stored as an array of strings in the RFID_nos field in the meeting table
-  const sql = "SELECT * FROM meeting WHERE date = CURDATE() AND start_time <= CURTIME() AND end_time >= CURTIME()";
+//       // RFID added successfully
+//       console.log('RFID added successfully.');
+//       return res.status(200).json({
+//         success: true,
+//         message: 'RFID added successfully.',
+//       });
+//     });
+//   } else {
+//     // Regular RFID access check
+//     const sql = "SELECT * FROM meeting WHERE date = CURDATE() AND start_time <= CURTIME() AND end_time >= CURTIME()";
 
-  db.query(sql, (err, data) => {
-    if (err) {
-      console.error('Error checking RFID access:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
+//     db.query(sql, (err, data) => {
+//       if (err) {
+//         console.error('Error checking RFID access:', err);
+//         return res.status(500).json({ error: 'Internal Server Error' });
+//       }
 
-    if (data.length > 0) {
-      const currentMeeting = data[0];
-      const currentMeetingRFID = currentMeeting.RFID_nos;
-      const currentMeetingReferenceKey= currentMeeting.reference_key;
+//       if (data.length > 0) {
+//         // Handle RFID access as needed
+//         // ...
 
-      if (currentMeetingRFID.includes(rfidData)) {
-        // RFID access is valid for the current meeting
-        logGrantedAccess(rfidData, currentTime,currentMeetingReferenceKey);
-        return res.status(200).json({
-          success: true,
-          message: 'RFID access granted for the current meeting',
-          status: 'Meeting now',
-          currentTime: currentTime,
-          currentDate: currentDate,
-          currentMeetingRFID: currentMeetingRFID,
-          currentMeetingReferenceKey: currentMeetingReferenceKey
-        });
-      } else {
-        // RFID access is denied as the provided RFID doesn't match the current meeting RFID
-        return res.status(403).json({
-          success: false,
-          message: 'RFID access denied for the current meeting',
-          status: 'Meeting now',
-          currentTime: currentTime,
-          currentDate: currentDate
-        });
-      }
-    } else {
-      // No meeting at the current time
-      return res.status(404).json({
-        success: false,
-        message: 'No meeting now',
-        currentTime: currentTime,
-        currentDate: currentDate
-      });
-    }
-  });
-});
+//         // Send a response for RFID access
+//         return res.status(200).json({
+//           success: true,
+//           message: 'RFID access granted for the current meeting',
+//           // Add other relevant data here
+//         });
+//       } else {
+//         // No meeting at the current time
+//         return res.status(404).json({
+//           success: false,
+//           message: 'No meeting now',
+//           currentTime: currentTime,
+//           currentDate: currentDate
+//         });
+//       }
+//     });
+//   }
+// });
+
 
 function logGrantedAccess(rfid, currentTime,currentMeetingReferenceKey) {
   const logSql = "INSERT INTO log (`rfid_no`, `inTIME`,`ref_key`) VALUES (?, ?,?)";
@@ -343,7 +362,96 @@ function logGrantedAccess(rfid, currentTime,currentMeetingReferenceKey) {
 }
 
 
+
+
+let scanButtonStatus = false;
+
+app.post('/updateButtonStatus', (req, res) => {
+  // Update scan button status based on the request data
+  scanButtonStatus = req.body.scanButtonStatus;
+  res.json({ message: 'Button status updated successfully' });
+});
+
+app.get('/getButtonStatus', (req, res) => {
+  console.log('Received GET request for button status');
+  console.log('Current scan button status:', scanButtonStatus);
+  res.json({ scanButtonStatus });
+});
+
 // ... (existing code)
+app.post('/checkRFIDAccess', (req, res) => {
+  const { rfidData } = req.body;
+  
+  // Log current time and date for debugging
+  const currentTime = new Date().toLocaleTimeString();
+  const currentDate = new Date().toLocaleDateString();
+  console.log('Current Time:', currentTime);
+  console.log('Current Date:', currentDate);
+  
+  // Assuming the RFID data is stored as an array of strings in the RFID_nos field in the meeting table
+  const sql = "SELECT * FROM meeting WHERE date = CURDATE() AND start_time <= CURTIME() AND end_time >= CURTIME()";
+  
+  // Assuming scanButtonStatus is a global variable accessible in this scope
+  if (scanButtonStatus) {
+    console.log('Scan button is pressed on');
+    // Optionally, reset the scanButtonStatus if needed
+    // scanButtonStatus = false;
+    
+    return res.json({
+      success: true,
+      message: 'RFID read with scan button pressed',
+      rfidData,
+    });
+  } else {
+    console.log('Scan button is  pressed off');
+    
+  
+    db.query(sql, (err, data) => {
+      if (err) {
+        console.error('Error checking RFID access:', err);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      if (data.length > 0) {
+        const currentMeeting = data[0];
+        const currentMeetingRFID = currentMeeting.RFID_nos;
+        const currentMeetingReferenceKey = currentMeeting.reference_key;
+
+        if (currentMeetingRFID.includes(rfidData)) {
+          // RFID access is valid for the current meeting
+          logGrantedAccess(rfidData, currentTime, currentMeetingReferenceKey);
+          return res.status(200).json({
+            success: true,
+            message: 'RFID access granted for the current meeting',
+            status: 'Meeting now',
+            currentTime,
+            currentDate,
+            currentMeetingRFID,
+            currentMeetingReferenceKey,
+          });
+        } else {
+          // RFID access is denied as the provided RFID doesn't match the current meeting RFID
+          return res.status(403).json({
+            success: false,
+            message: 'RFID access denied for the current meeting',
+            status: 'Meeting now',
+            currentTime,
+            currentDate,
+          });
+        }
+      } else {
+        // No meeting at the current time
+        return res.status(404).json({
+          success: false,
+          message: 'No meeting now',
+          currentTime,
+          currentDate,
+        });
+      }
+    });
+  }
+});
+
 
 
 // //  route to handle forgot password
