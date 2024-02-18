@@ -10,7 +10,7 @@ const AddEmployee = () => {
   const [data, setData] = useState([]);
   const [name, setname] = useState('');
   const [EID, setEmployeeID] = useState('');
-  const [RFID_no, setRFIDNo] = useState('');
+  const [rfidData, setRfidData] = useState('');
   const [phone_no, setPhoneNumber] = useState('');
   const [department, setDepartment] = useState('');
   const [building, setBuilding] = useState('');
@@ -27,7 +27,32 @@ const AddEmployee = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
   const [scanRFIDButton, setScanRFIDButton] = useState(false);
-  
+  const [RFID_no, setRFIDNo] = useState('');
+
+  useEffect(() => {
+    const ws = new WebSocket('ws://localhost:8000');
+
+    ws.onopen = function() {
+      console.log('WebSocket Client Connected');
+    };
+
+    ws.onmessage = function(e) {
+      var message = JSON.parse(e.data);
+      console.log('Received: ', message);
+      // Update the text box with the RFID data
+      document.getElementById('rfidTextBox').value = message.rfidData;
+      setRfidData(message.rfidData);
+      setRFIDNo(message.rfidData);
+    };
+
+    ws.onerror = function(error) {
+      console.error('WebSocket Error:', error);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
 
   useEffect(() => {
     // Fetch the initial scan button status from the backend
@@ -178,8 +203,15 @@ const AddEmployee = () => {
         </div>
         <div className="form-group">
           <label>RFID No</label>
-          <input type="text" ref={no} placeholder="Enter ID" name="RFID_no" required
-          onChange={e => setRFIDNo(e.target.value)} />
+          <input
+            type="text"
+            id="rfidTextBox"
+            ref={no}
+            placeholder="Enter ID"
+            name="RFID_no"
+            value={rfidData} // Use state to manage the value
+            readOnly // Make the input read-only
+          />
         </div>
         <div className="form-group">
           <label>Phone Number</label>
