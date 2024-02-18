@@ -1,13 +1,28 @@
 const express = require('express');
+const http = require('http');
+const WebSocket = require("ws");
 const mysql = require('mysql');
 const cors = require('cors');
-const bodyParser = require('body-parser');  
-// const moment = require('moment-timezone');
+const bodyParser = require('body-parser');
 
-// console.log(moment.tz.guess());
-
-
+let scanButtonStatus = false;
 const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', function connection(ws) {
+  console.log('A new client connected');
+  
+  ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+    // Here you can also handle messages from the client if needed
+  });
+  
+  // Example of sending a message to the client
+  // ws.send('something');
+});
+
+
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
@@ -34,19 +49,6 @@ db.connect((err) => {
 
 // Handle JSON parsing middleware
 app.use(express.json());
-
-// Fetch all meetings
-// app.get('/meeting', (req, res) => {
-//   const query = 'SELECT * FROM meeting'; // Adjust this query based on your database structure
-//   db.query(query, (err, results) => {
-//     if (err) {
-//       console.error('Error fetching meetings:', err);
-//       res.status(500).json({ error: 'Internal Server Error' });
-//     } else {
-//       res.status(200).json(results);
-//     }
-//   });
-// });
 
 // Fetch all employees
 app.get('/AddEmployee', (req, res) => {
@@ -80,7 +82,7 @@ app.get('/ScheduleMeet', (req, res) => {
 
 // Add a new employee
 app.post('/AddEmployee', (req, res) => {
-  const sql = "INSERT INTO employee (`EID`, `name`, `RFID_no`, `phone_no`, `department`, `building`, `role`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  const sql = "INSERT INTO employee (EID, name, RFID_no, phone_no, department, building, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
   const { EID, name, RFID_no, phone_no, department, building, role } = req.body;
   const values = [EID, name, RFID_no, phone_no, department, building, role];
 
@@ -93,27 +95,12 @@ app.post('/AddEmployee', (req, res) => {
   });
 });
 
-// Schedule a new meeting
-// app.post('/ScheduleMeet', (req, res) => {
-//   const sql = "INSERT INTO meeting (`topic`, `Participants`, `date`, `start_time`, `end_time`, `scheduler`, `duration`, `schldate`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-//   const { topic, Participants, date, start_time, end_time, scheduler, duration, schldate } = req.body;
-//   const values = [topic, Participants, date, start_time, end_time, scheduler, duration, schldate];
-
-//   db.query(sql, values, (err, data) => {
-//     if (err) {
-//       console.error('Error adding meeting:', err);
-//       return res.status(500).json({ error: 'Internal Server Error', details: err.message });
-//     } else {
-//       return res.status(200).json({ success: true, data });
-//     }
-//   });
-// });
 
 // Schedule a new meeting
 app.post('/ScheduleMeet', (req, res) => {
   console.log('Received request:', req.body);
   const currentDate = new Date().toISOString().split('T')[0]; // Getting current date in "YYYY-MM-DD" format
-  const sql = "INSERT INTO meeting (`reference_key`, `topic`, `Participants`, `date`, `start_time`, `end_time`, `scheduler`, `duration`, `schldate`, `RFID_nos`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const sql = "INSERT INTO meeting (reference_key, topic, Participants, date, start_time, end_time, scheduler, duration, schldate, RFID_nos) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const { referenceKey, topic, Participants, date, start_time, end_time, scheduler, duration, RFID_nos } = req.body;
   const values = [referenceKey, topic, Participants, date, start_time, end_time, scheduler, duration, currentDate, JSON.stringify(RFID_nos)];
   db.query(sql, values, (err, data) => {
@@ -255,103 +242,8 @@ app.post('/login', (req, res) => {
 
 
 
-
-
-
-// app.post('/rfid-scan', (req, res) => {
-//   const { rfidData } = req.body;
-//   const sql = "INSERT INTO rfid_scans (rfid_data) VALUES (?)";
-//   db.query(sql, [rfidData], (err, data) => {
-//     if (err) {
-//       console.error('Error storing RFID data:', err);
-//       return res.status(500).json({ error: 'Internal Server Error' });
-//     }
-//     return res.status(200).json({ success: true, data });
-//   });
-// });
-// let isScanning = false;
-
-// router.post('/startScan', (req, res) => {
-//   const { startScan } = req.body;
-
-//   if (startScan) {
-//     // Start the scan
-//     isScanning = true;
-//     console.log('Scan started');
-//   } else {
-//     // Stop the scan
-//     isScanning = false;
-//     console.log('Scan stopped');
-//   }
-
-//   res.status(200).json({ message: `Scan ${startScan ? 'started' : 'stopped'} successfully` });
-// });
-
-
-
-
-// app.post('/checkRFIDAccess', (req, res) => {
-//   const { rfidData, scanRFIDStatus } = req.body;
-
-//   // Log current time and date for debugging
-//   const currentTime = new Date().toLocaleTimeString();
-//   const currentDate = new Date().toLocaleDateString();
-//   console.log('Current Time:', currentTime);
-//   console.log('Current Date:', currentDate);
-
-//   if (scanRFIDStatus) {
-//     // Scan RFID button is on, add RFID to the RFID No column
-//     // Update the employee table with the scanned RFID
-//     const updateRFIDSql = "UPDATE employee SET RFID_no = ? WHERE EID = 1"; // Assuming EID 1 for example
-//     db.query(updateRFIDSql, [rfidData], (updateErr) => {
-//       if (updateErr) {
-//         console.error('Error updating RFID:', updateErr);
-//         return res.status(500).json({ error: 'Internal Server Error' });
-//       }
-
-//       // RFID added successfully
-//       console.log('RFID added successfully.');
-//       return res.status(200).json({
-//         success: true,
-//         message: 'RFID added successfully.',
-//       });
-//     });
-//   } else {
-//     // Regular RFID access check
-//     const sql = "SELECT * FROM meeting WHERE date = CURDATE() AND start_time <= CURTIME() AND end_time >= CURTIME()";
-
-//     db.query(sql, (err, data) => {
-//       if (err) {
-//         console.error('Error checking RFID access:', err);
-//         return res.status(500).json({ error: 'Internal Server Error' });
-//       }
-
-//       if (data.length > 0) {
-//         // Handle RFID access as needed
-//         // ...
-
-//         // Send a response for RFID access
-//         return res.status(200).json({
-//           success: true,
-//           message: 'RFID access granted for the current meeting',
-//           // Add other relevant data here
-//         });
-//       } else {
-//         // No meeting at the current time
-//         return res.status(404).json({
-//           success: false,
-//           message: 'No meeting now',
-//           currentTime: currentTime,
-//           currentDate: currentDate
-//         });
-//       }
-//     });
-//   }
-// });
-
-
 function logGrantedAccess(rfid, currentTime,currentMeetingReferenceKey) {
-  const logSql = "INSERT INTO log (`rfid_no`, `inTIME`,`ref_key`) VALUES (?, ?,?)";
+  const logSql = "INSERT INTO log (rfid_no, inTIME,ref_key) VALUES (?, ?,?)";
   db.query(logSql, [rfid, currentTime,currentMeetingReferenceKey], (err) => {
     if (err) {
       console.error('Error logging granted access:', err);
@@ -363,8 +255,6 @@ function logGrantedAccess(rfid, currentTime,currentMeetingReferenceKey) {
 
 
 
-
-let scanButtonStatus = false;
 
 app.post('/updateButtonStatus', (req, res) => {
   // Update scan button status based on the request data
@@ -394,8 +284,11 @@ app.post('/checkRFIDAccess', (req, res) => {
   // Assuming scanButtonStatus is a global variable accessible in this scope
   if (scanButtonStatus) {
     console.log('Scan button is pressed on');
-    // Optionally, reset the scanButtonStatus if needed
-    // scanButtonStatus = false;
+    wss.clients.forEach(function each(client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ rfidData }));
+      }
+    });
     
     return res.json({
       success: true,
@@ -405,7 +298,10 @@ app.post('/checkRFIDAccess', (req, res) => {
   } else {
     console.log('Scan button is  pressed off');
     
-  
+    // Perform any additional logic with rfidData when the button is not pressed
+    // ...
+
+    // Perform the database query
     db.query(sql, (err, data) => {
       if (err) {
         console.error('Error checking RFID access:', err);
@@ -453,20 +349,6 @@ app.post('/checkRFIDAccess', (req, res) => {
 });
 
 
-
-// //  route to handle forgot password
-// app.post('/forgot', (req, res) => {
-//   const { email } = req.body;
-
-//   // Perform necessary actions for sending a password reset email
-//   // For example, generate a reset token, send an email, etc.
-
-//   // Return success or failure response
-//   res.json({ success: true, message: 'Password reset email sent successfully.' });
-// });
-
-
-
 // Update the getAllMeetingDetails route to include inTime from the log table
 // Fetch all meeting details
 app.get('/getAllMeetingDetails', (req, res) => {
@@ -497,6 +379,7 @@ INNER JOIN meeting ON log.ref_key = meeting.reference_key;`;
 
 
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+// Start server
+server.listen(port,()=> {
+  console.log('Server is running on port ${port}');
 });
