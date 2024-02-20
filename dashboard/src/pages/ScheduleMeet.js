@@ -80,7 +80,24 @@ const ScheduleMeet = () => {
     fontSize: '14px', // Adjust the font size as needed
   };
   
-
+  const handleReset = () => {
+    // Clear form data and permissions
+    settopic('');
+    setdate('');
+    setstart_time('');
+    setend_time('');
+    setscheduler('');
+    setDuration('');
+    
+    // Clear input values using refs
+    mt.current.value='';
+    mo.current.value='';
+    par.current.resetSelectedValues();  
+    dt.current.value='';
+    st.current.value='';
+    et.current.value='""';
+    // Additional reset logic if needed
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -249,7 +266,8 @@ const ScheduleMeet = () => {
         </div>
         <div className='btdiv'>
         <div className='btn' id="bt">
-          <button type="submit">Schedule</button>
+          <button type="submit" className="schedule-btn">Schedule</button>
+          <button type="button" onClick={handleReset} className="re-btn">Reset</button>
         </div>
         </div>
       </form>
