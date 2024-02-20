@@ -29,11 +29,24 @@ const AddAdmin = () => {
     }
   };
 
+  
+
   console.log('Selected Permissions:', permissions);
 
   const handleCloseModal = () => {
     setShowModal(false);
     // You can perform additional actions after closing the modal if needed
+  };
+  const handleReset = () => {
+    // Clear form data and permissions
+    setname('');
+    setpass('');
+    setPermissions([]);
+    // Clear input values using refs
+    an.current.value = '';
+    pa.current.value = '';
+    pe.current.checked = false;
+    // Additional reset logic if needed
   };
 
   const handleSubmit = async (e) => {
@@ -137,7 +150,8 @@ const AddAdmin = () => {
     </div>
 
         <div  className='but'>
-          <button type="submit">Add</button>
+          <button type="submit" className='add_button'>Add</button>
+          <button type="button" className='res_button' onClick={handleReset}>Reset</button>
         </div>
       </form>
       <Modal show={showModal} onHide={handleCloseModal}>
