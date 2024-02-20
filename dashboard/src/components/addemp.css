@@ -11,7 +11,7 @@
 .form-container {
   margin-top: 50px;
   margin-right: 10px;
-  height:88vh;
+  height:89vh;
   width: 350px;
   background: white;
   border: 1px solid #ccc;
@@ -80,6 +80,16 @@
   cursor: pointer;
   font-size: 14px;
   
+}
+.scan-btn{
+  margin-left: 50px;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
 }
 .emp tbody{
   display: block;
@@ -163,4 +173,8 @@
 .refresh-icon:hover{
   cursor: pointer;
   color: #4caf50;
+}
+.rfid{
+  height: 30px;
+  font-size: 10px;
 }
