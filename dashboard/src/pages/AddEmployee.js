@@ -5,6 +5,8 @@ import '../components/addemp.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MdOutlineRefresh } from "react-icons/md";
+import { IoIosRadioButtonOn } from "react-icons/io";
+import { IoIosRadioButtonOff } from "react-icons/io";
 
 const AddEmployee = () => {
   const [data, setData] = useState([]);
@@ -72,6 +74,19 @@ const AddEmployee = () => {
         setFilteredData(res.data);
       })
       .catch(err => console.log(err));
+
+      return () => {
+        // Make an HTTP request to update the button press status when leaving the page
+        axios.post('http://localhost:8000/updateButtonStatus', {
+          scanButtonStatus: false, // Set to the desired value when leaving the page
+        })
+          .then(response => {
+            console.log('Button status updated:', response.data);
+          })
+          .catch(error => {
+            console.error('Error updating button status:', error);
+          });
+      };
   }, []); // Empty dependency array to ensure the effect runs only once during component mount
   
 
@@ -231,7 +246,7 @@ const AddEmployee = () => {
             type="text"
             id="rfidTextBox"
             ref={no}
-            placeholder="Enter ID"
+            placeholder=" RFID"
             name="RFID_no"
             value={RFID_no} // Use state to manage the value
             readOnly // Make the input read-only
@@ -268,6 +283,8 @@ const AddEmployee = () => {
     handleScanRFID();
   }}
 >{scanRFIDButton ? 'scan button is on' : 'scan button is off'}
+{scanRFIDButton ? <IoIosRadioButtonOn /> : <IoIosRadioButtonOff />}
+
 </button>
 
         <div className="form-group clearfix">
