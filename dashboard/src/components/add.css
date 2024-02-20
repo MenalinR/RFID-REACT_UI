@@ -42,7 +42,7 @@
   border-radius: 10px;
   padding-top: 1px;
   font-size: small;
-  height: 60vh;
+  height: 63vh;
  
 }
 
@@ -110,4 +110,20 @@ button {
 
 button:hover {
   background-color: #45a049;
+}
+.add_button{
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+
+}
+.res_button{  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+
 }
