@@ -10,7 +10,7 @@ const AddEmployee = () => {
   const [data, setData] = useState([]);
   const [name, setname] = useState('');
   const [EID, setEmployeeID] = useState('');
-  const [rfidData, setRfidData] = useState('');
+  const [, setRfidData] = useState('');
   const [phone_no, setPhoneNumber] = useState('');
   const [department, setDepartment] = useState('');
   const [building, setBuilding] = useState('');
@@ -116,6 +116,29 @@ const AddEmployee = () => {
       });
   };
 
+
+  
+  const handleReset = () => {
+    // Clear form data and permissions
+    setEmployeeID('');
+    setRfidData('');
+    setPhoneNumber('');
+    setDepartment('');
+    setBuilding('');
+    setJobRole('');
+    
+    // Clear input values using refs
+    eid.current.value = "";
+    ename.current.value = "";
+    no.current.value = "";
+    pno.current.value = "";
+    dep.current.value = "";
+    bui.current.value = "";
+    job.current.value = "";
+
+    // Additional reset logic if needed
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -152,6 +175,7 @@ const AddEmployee = () => {
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data);
           toast.success('Record saved successfully');
+          setRFIDNo('');
 
           axios.get('http://localhost:8000/AddEmployee')
             .then(res => setData(res.data))
@@ -209,7 +233,7 @@ const AddEmployee = () => {
             ref={no}
             placeholder="Enter ID"
             name="RFID_no"
-            value={rfidData} // Use state to manage the value
+            value={RFID_no} // Use state to manage the value
             readOnly // Make the input read-only
           />
         </div>
@@ -251,7 +275,7 @@ const AddEmployee = () => {
             Add
           </button>
 
-          <button type="button" className="reset-btn" >
+          <button type="button" onClick={handleReset} className="reset-btn" >
             Reset
           </button>
           {/* <space direction="horizontal" size={12}></space>
