@@ -60,9 +60,29 @@ button:hover {
   background-color: #45a049; /* Darker green on hover */
 }
 .btdiv{
-  padding-left: 100px;
+  padding-left: 70px;
   
 }
+/* Add some margin or padding to create space between the buttons */
+.schedule-btn {
+  margin-right: 10px; /* Adjust the value based on your preference */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.re-btn {
+  /* You can also use margin-left if you prefer */
+  margin-left: 10px; /* Adjust the value based on your preference */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 /* .ta {
   width: 38%;
   padding-right: 100px;
