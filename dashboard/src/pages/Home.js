@@ -43,6 +43,23 @@ const Home = () => {
       .catch((error) => console.error('Error fetching events:', error));
   }, []); // Fetch events when the component mounts
 
+
+  const handleLogout = async () => {
+   
+      try {
+        // Make a request to the server's logout endpoint
+        await axios.post('http://localhost:8000/logout');
+  
+        // Clear localStorage or perform additional client-side logout actions
+        localStorage.clear();
+  
+        // Redirect the user to the login page or perform other actions
+        window.location.href = '/login';
+      } catch (error) {
+        console.error('Error during logout:', error);
+      }
+  };
+
   const customToastStyle = {
     width: 'auto', // Adjust the width as needed
     fontSize: '12px', // Adjust the font size as needed
@@ -78,7 +95,13 @@ const Home = () => {
   };
 
   return (
+    
     <div>
+     
+        <button type='button' onClick={handleLogout} className='logout'>
+        Logout
+      </button>
+     
   {upcomingMeeting && (
   <div style={{
     display: 'flex',
@@ -91,10 +114,10 @@ const Home = () => {
     border: '0px solid #ddd', // Thicker border
     fontSize: '18px', // Larger font size
     width: '700px',
-    marginTop:'10px',
+    marginTop:'-150px',
     background:'white',
     boxShadow: '0 0 55px rgba(0, 0, 0, 1)', // Add a subtle shadow
-    margin: '50px auto', // Center the element horizontally
+    margin: '40px ', // Center the element horizontally
   }}>
     <BsCalendarCheckFill style={{ fontSize: '36px', marginBottom: '10px', color: 'green' }} />
     <h3 style={{ fontSize: '24px', marginBottom: '10px' }}>Upcoming Meeting</h3>
@@ -114,19 +137,21 @@ const Home = () => {
     startAccessor="start"
     endAccessor="end"
     style={{
-      height: 450,
+      height: 420,
       width: 800,
       fontSize: 15,
       backgroundColor: 'white', // Change background color
       borderRadius: 10,
       boxShadow: '0 0 10px rgba(0, 0, 0, 0.9)', // Add a subtle shadow
-      margin: '20px auto', // Center the element horizontally with a margin
+      margin: '10px ', // Center the element horizontally with a margin
     }}
     eventPropGetter={eventStyleGetter}
     onSelectEvent={handleEventClick}
     tooltipAccessor="tooltip"
   />
 </div>
+
+
 
       <ToastContainer
         toastStyle={customToastStyle}
